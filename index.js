@@ -1,13 +1,16 @@
 const express = require('express');
-const { default: mongoose } = require('mongoose');
-
+const mongoose = require('mongoose');
 const app = express();
 
+const credentials = require('./env.json');
 
 app.use(express.json());
 
+const connectionString = `mongodb+srv://${credentials.Username}:${credentials.Password}@vehicleapi.ed7ug.mongodb.net/<your-database-name>?retryWrites=true&w=majority`;
+
+
 //Add that connection string from 4.4 instructions in Readme, then repalce with your own password and login
-mongoose.connect("mongodb+srv://<db_username>:<db_password>@vehicleapi.ed7ug.mongodb.net/?retryWrites=true&w=majority&appName=VehicleAPI")
+mongoose.connect(connectionString)
 .then(() =>{
     console.log("Connected to database");
     
