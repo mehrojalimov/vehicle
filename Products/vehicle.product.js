@@ -1,6 +1,6 @@
 const { type } = require("os");
 
-const mongoose = reqire('mongoose');
+const mongoose = require('mongoose');
 
 const VehicleSchema = mongoose.Schema(
 
@@ -47,4 +47,4 @@ const VehicleSchema = mongoose.Schema(
 
 const Vehicle = mongoose.model("Vehicles", VehicleSchema);
 
-module.exports = Product;
+module.exports = Vehicle;
