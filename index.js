@@ -45,9 +45,26 @@ app.get('/vehicle/:vin', async (req, res) =>{
         res.status(200).json(vehicle);
 
     } catch (error) {
-        res.json({message: error.message});
+        res.status(500).json({message: error.message});
     }
-})
+});
+
+app.put('/vehicle/:vin', async (req, res) =>{
+    try {
+        const { vin } = req.params; 
+        const vehicle = await Vehicle.findOneAndUpdate({vin: vin.toUpperCase()}, req.body);
+
+        if(!vehicle){
+            return res.status(404).json({message: "Vehicle bot found"});
+        }
+
+        const updatedVehicle = await Vehicle.findOne({vin: vin.toUpperCase()});
+        res.status(200).json(updatedVehicle);
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 
 
