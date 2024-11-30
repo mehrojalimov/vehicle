@@ -2,7 +2,7 @@ const { type } = require("os");
 
 const mongoose = require('mongoose');
 
-const VehicleSchema = mongoose.Schema(
+const vehicleSchema = mongoose.Schema(
 
     {
         manufacturer_name: {
@@ -17,6 +17,11 @@ const VehicleSchema = mongoose.Schema(
 
         horse_power: {
             type: Number,
+            required: true,
+        },
+
+        model_name: {
+            type: String,
             required: true,
         },
 
@@ -41,10 +46,13 @@ const VehicleSchema = mongoose.Schema(
             unique: true,
             trim: true,
             uppercase: true,
-        }
-    }
-);
+        },
+    },
 
-const Vehicle = mongoose.model("Vehicles", VehicleSchema);
+{ timestamps: true });
+
+vehicleSchema.index({ vin: 1 }, { unique: true });
+
+const Vehicle = mongoose.model("Vehicles", vehicleSchema);
 
 module.exports = Vehicle;
