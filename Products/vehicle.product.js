@@ -1,5 +1,3 @@
-const { type } = require("os");
-
 const mongoose = require('mongoose');
 
 const vehicleSchema = mongoose.Schema(
@@ -40,7 +38,7 @@ const vehicleSchema = mongoose.Schema(
             required: true,
         },
 
-        VIN: {
+        vin: {
             type: String,
             required: true,
             unique: true,
@@ -50,8 +48,6 @@ const vehicleSchema = mongoose.Schema(
     },
 
 { timestamps: true });
-
-vehicleSchema.index({ vin: 1 }, { unique: true });
 
 const Vehicle = mongoose.model("Vehicles", vehicleSchema);
 

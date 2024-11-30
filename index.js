@@ -33,6 +33,21 @@ app.post('/vehicle', async (req, res) => {
 
 });
 
+app.get('/vehicle/:vin', async (req, res) =>{
+    try {
+        const { vin } = req.params;    
+        const vehicle = await Vehicle.findOne({vin: vin.toUpperCase()});
+
+        if (!vehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        res.status(200).json(vehicle);
+
+    } catch (error) {
+        res.json({message: error.message});
+    }
+})
 
 
 
