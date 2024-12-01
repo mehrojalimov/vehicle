@@ -48,7 +48,7 @@ app.post('/vehicle', async (req, res) => {
     const { error, value } = vehicleValidationSchema.validate(req.body);
 
     if (error) {
-        return res.status(400).json({ message: "Invalid request data", details: error.details });
+        return res.status(422).json({ message: "Invalid request data", details: error.details });
     }
 
     try {
@@ -85,7 +85,7 @@ app.put('/vehicle/:vin', async (req, res) =>{
         const vehicle = await Vehicle.findOneAndUpdate({vin: vin.toUpperCase()}, req.body);
 
         if(!vehicle){
-            return res.status(404).json({message: "Vehicle bot found"});
+            return res.status(404).json({message: "Vehicle not found"});
         }
 
         const updatedVehicle = await Vehicle.findOne({vin: vin.toUpperCase()});
@@ -106,7 +106,7 @@ app.delete('/vehicle/:vin', async (req, res) => {
 
         const vehicle = await Vehicle.findOneAndDelete({vin: vin.toUpperCase()});
         if(!vehicle){
-            return res.status(404).json({message: "Vehicle bot found"});
+            return res.status(404).json({message: "Vehicle not found"});
         }
 
         res.status(204).send();
