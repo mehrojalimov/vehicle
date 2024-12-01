@@ -67,7 +67,21 @@ app.put('/vehicle/:vin', async (req, res) =>{
 });
 
 
+app.delete('/vehicle/:vin', async (req, res) => {
+    try {
+        const { vin } = req.params;
 
+        const vehicle = await Vehicle.findOneAndDelete({vin: vin.toUpperCase()});
+        if(!vehicle){
+            return res.status(404).json({message: "Vehicle bot found"});
+        }
+
+        res.status(204).send();
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 
 mongoose.connect(connectionString)
