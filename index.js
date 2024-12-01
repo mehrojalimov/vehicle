@@ -9,6 +9,12 @@ const credentials = require('./env.json');
 
 app.use(express.json());
 
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({ message: "Invalid JSON format" });
+    }
+    next();
+});
 
 //Add connection string from 4.4 and 4.5 instructions in Readme in env.json, repalcing with your own password and login
 const connectionString = `mongodb+srv://${credentials.Username}:${credentials.Password}@vehicleapi.ed7ug.mongodb.net/<your-database-name>?retryWrites=true&w=majority`;
@@ -19,6 +25,9 @@ app.get('/vehicle', async (req, res) => {
         const vehicle = await Vehicle.find({});
         res.status(200).json(vehicle);
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(422).json({ message: "Validation error", errors: error.errors });
+        }
         res.status(500).json({message: error.message});
     }
 })
@@ -28,6 +37,9 @@ app.post('/vehicle', async (req, res) => {
         const vehicle = await Vehicle.create(req.body);
         res.status(201).json(vehicle);
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(422).json({ message: "Validation error", errors: error.errors });
+        }
         res.status(500).json({message: error.message});
     }
 
@@ -62,6 +74,9 @@ app.put('/vehicle/:vin', async (req, res) =>{
         res.status(200).json(updatedVehicle);
 
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(422).json({ message: "Validation error", errors: error.errors });
+        }
         res.status(500).json({message: error.message});
     }
 });
