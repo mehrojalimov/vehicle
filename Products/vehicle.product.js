@@ -49,6 +49,8 @@ const vehicleSchema = mongoose.Schema(
 
 { timestamps: true });
 
+vehicleSchema.index({ vin: 1 }, { unique: true });
+
 const Vehicle = mongoose.model("Vehicles", vehicleSchema);
 
 module.exports = Vehicle;
