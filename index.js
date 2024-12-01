@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Vehicle = require('./Products/vehicle.product.js');
+const Joi = require('joi');
 
 const app = express();
 
@@ -20,6 +21,17 @@ app.use((err, req, res, next) => {
 const connectionString = `mongodb+srv://${credentials.Username}:${credentials.Password}@vehicleapi.ed7ug.mongodb.net/<your-database-name>?retryWrites=true&w=majority`;
 
 
+const vehicleValidationSchema = Joi.object({
+    manufacturer_name: Joi.string().required(),
+    description: Joi.string().required(),
+    horse_power: Joi.number().required(),
+    model_name: Joi.string().required(),
+    model_year: Joi.number().integer().required(),
+    purchase_price: Joi.number().positive().required(),
+    fuel_type: Joi.string().required(),
+    vin: Joi.string().required().uppercase()
+});
+
 app.get('/vehicle', async (req, res) => {
     try {
         const vehicle = await Vehicle.find({});
@@ -33,6 +45,12 @@ app.get('/vehicle', async (req, res) => {
 })
 
 app.post('/vehicle', async (req, res) => {
+    const { error, value } = vehicleValidationSchema.validate(req.body);
+
+    if (error) {
+        return res.status(400).json({ message: "Invalid request data", details: error.details });
+    }
+
     try {
         const vehicle = await Vehicle.create(req.body);
         res.status(201).json(vehicle);
