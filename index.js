@@ -18,7 +18,7 @@ app.use((err, req, res, next) => {
 });
 
 //Add connection string from 4.4 and 4.5 instructions in Readme in env.json, repalcing with your own password and login
-const connectionString = `mongodb+srv://${credentials.Username}:${credentials.Password}@vehicleapi.ed7ug.mongodb.net/<your-database-name>?retryWrites=true&w=majority`;
+const connectionString = `mongodb+srv://${credentials.Username}:${credentials.Password}@vehicleapi.ed7ug.mongodb.net/Vehicles?retryWrites=true&w=majority`;
 
 
 const vehicleValidationSchema = Joi.object({
@@ -127,3 +127,6 @@ mongoose.connect(connectionString)
 .catch((error) => {
     console.error("Database connection failed:", error.message);
 });
+
+
+module.exports = app;
