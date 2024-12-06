@@ -82,20 +82,21 @@ app.get('/vehicle/:vin', async (req, res) =>{
 });
 
 
-app.get('/vehicle/sold', async (req, res) =>{
+app.get('/sold', async (req, res) => {
     try {
-        const vehicle = await Vehicle.find({"sold": "Yes"});
+        const vehicles = await Vehicle.find({"sold": "Yes"});
         
-        if (!vehicle) {
-            return res.status(404).json({ message: "Vehicle not found" });
+        if (vehicles.length === 0) {
+            return res.status(404).json({ message: "No sold vehicles found" });
         }
 
-        res.status(200).json(vehicle);
+        res.status(200).json(vehicles);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 });
+
 
 
 app.put('/vehicle/:vin', async (req, res) =>{
