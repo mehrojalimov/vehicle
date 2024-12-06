@@ -29,7 +29,9 @@ const vehicleValidationSchema = Joi.object({
     model_year: Joi.number().integer().required(),
     purchase_price: Joi.number().positive().required(),
     fuel_type: Joi.string().required(),
-    vin: Joi.string().required().uppercase()
+    vin: Joi.string().required().uppercase(),
+    color: Joi.string().required(),
+    sold: Joi.string().required(),
 });
 
 app.get('/vehicle', async (req, res) => {
@@ -78,6 +80,23 @@ app.get('/vehicle/:vin', async (req, res) =>{
         res.status(500).json({message: error.message});
     }
 });
+
+
+app.get('/vehicle/sold', async (req, res) =>{
+    try {
+        const vehicle = await Vehicle.find({"sold": "Yes"});
+        
+        if (!vehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        res.status(200).json(vehicle);
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
+
 
 app.put('/vehicle/:vin', async (req, res) =>{
     try {

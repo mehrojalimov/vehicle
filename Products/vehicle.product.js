@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const vehicleSchema = mongoose.Schema(
-
     {
         manufacturer_name: {
             type: String,
@@ -45,9 +44,22 @@ const vehicleSchema = mongoose.Schema(
             trim: true,
             uppercase: true,
         },
+
+        color: {
+            type: String,
+            required: true,
+            default: null,
+        },
+
+        sold: {
+            type: String,
+            require: true,
+            default: "No",
+        }
     },
 
 { timestamps: true });
+
 
 vehicleSchema.index({ vin: 1 }, { unique: true });
 
